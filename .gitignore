@@ -1,0 +1,14 @@
+scripts.md
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+*.tfvars
+.DS_Store
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars.json
+*tfplan*
+.terraformrc
+terraform.rc
