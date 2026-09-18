@@ -10,7 +10,7 @@ resource "aws_vpc" "my_vpc" {
 # Create a subnet 
 resource "aws_subnet" "my_subnet" {
   vpc_id            = aws_vpc.my_vpc.id
-  cidr_block        = local.public_subnet_cidr
+  cidr_block        = local.public_subnet1_cidr
   depends_on        = [aws_vpc.my_vpc]
   availability_zone = "us-east-1a"
   tags = {
@@ -25,6 +25,7 @@ resource "aws_instance" "my_instance" {
   associate_public_ip_address = var.public_ip # To enable public IP
   subnet_id                   = aws_subnet.my_subnet.id
   depends_on                  = [aws_subnet.my_subnet]
+  key_name                    = "awsKey2"
   tags                        = var.instance_name_env
 }
 
