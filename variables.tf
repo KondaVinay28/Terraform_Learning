@@ -58,3 +58,10 @@ variable "instance_name_env" {
     "env"  = "Dev"
   }
 }
+
+# for expressions demo
+variable "users" {
+  description = "List of IAM users"
+  type        = list(string)
+  default     = ["user1", "user2", "user3"]
+}

@@ -9,3 +9,9 @@ output "VPC_ID" {
   description = "The VPC Id"
   value       = aws_vpc.my_vpc.id
 }
+
+# for expression demo
+output "print_iam_users" {
+  description = "List of IAM users"
+  value       = [for name in var.users : name]
+}
