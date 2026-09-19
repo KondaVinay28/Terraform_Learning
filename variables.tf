@@ -21,11 +21,18 @@ variable "public_ip" {
   default     = true
 }
 
-# Variables for IAM users
+# Variables for IAM users, uncomment this if you use count using list(strings)
 # variable "users" {
 #   description = "List of IAM users"
 #   type = list(string)
 #   default = [ "user1", "user2", "user3" ] 
+# }
+
+# Create IAM users using set(strings), uncomment this if you use for_each loop using set(strings)
+# variable "users" {
+#   description = "List of IAM users"
+#   type        = set(string)
+#   default     = ["user1", "user2", "user3"]
 # }
 
 # Instance name variable 

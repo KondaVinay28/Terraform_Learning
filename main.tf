@@ -29,8 +29,14 @@ resource "aws_instance" "my_instance" {
   tags                        = var.instance_name_env
 }
 
-# Create IAM users
+# Create IAM users using count and list(string)
 # resource "aws_iam_user" "user_iam" {
 #   count = length(var.users)// 3
 #   name = var.users[count.index]
+# }
+
+# Creating IAM users using for_each and set(string)
+# resource "aws_iam_user" "user_iam" {
+#   for_each = var.users
+#   name     = each.value
 # }
