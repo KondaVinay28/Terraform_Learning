@@ -78,6 +78,11 @@ resource "aws_route_table_association" "my_rt_association" {
   route_table_id = aws_route_table.name.id
 
 }
+# Using key-pair generated using ssh-keygen
+resource "aws_key_pair" "my_key_pair" {
+  key_name   = "terraform-key"
+  public_key = file("/Users/vinaykonda/terraformKey.pub")
+}
 # Create an EC2 Instance with our custom vpc id
 resource "aws_instance" "my_instance" {
   ami                         = "ami-0b6d9d3d33ba97d99"
@@ -87,8 +92,9 @@ resource "aws_instance" "my_instance" {
   subnet_id                   = aws_subnet.my_subnet.id
   depends_on                  = [aws_subnet.my_subnet]
   vpc_security_group_ids      = [aws_security_group.my_sg.id]
-  key_name                    = "awsKey2"
-  tags                        = var.instance_name_env
+  # key_name                    = "awsKey2" # use this if you have an existing key-pair in aws cloud
+  key_name = aws_key_pair.my_key_pair.key_name
+  tags     = var.instance_name_env
 }
 
 # Create IAM users using count and list(string)
