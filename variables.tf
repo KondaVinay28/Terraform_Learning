@@ -65,3 +65,16 @@ variable "users" {
   type        = list(string)
   default     = ["user1", "user2", "user3"]
 }
+
+# For Dynamic Blocks
+variable "ingress_rules" {
+  type = list(object({
+    port        = number
+    description = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    { port = 22, description = "SSH from anywhere", cidr_blocks = ["0.0.0.0/0"] },
+    { port = 80, description = "For the nginx server", cidr_blocks = ["0.0.0.0/0"] }
+  ]
+}

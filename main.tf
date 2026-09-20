@@ -38,20 +38,32 @@ resource "aws_security_group" "my_sg" {
   name        = "terraform-sg"
   description = "Security Group"
   # Inbound Rules
-  ingress {
-    description = "SSH from anywhere"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  # For nginx
-  ingress {
-    description = "For the nginx server"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  # If you're not using Dynamic Blocks uncomment below two blocks
+  # ingress {
+  #   description = "SSH from anywhere"
+  #   from_port   = 22
+  #   to_port     = 22
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+  # # For nginx
+  # ingress {
+  #   description = "For the nginx server"
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+  # Dynamic blocks
+  dynamic "ingress" {
+    for_each = var.ingress_rules
+    content {
+      description = ingress.value.description
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = "tcp"
+      cidr_blocks = ingress.value.cidr_blocks
+    }
   }
   # Outbound Rules
   egress {
@@ -104,32 +116,32 @@ resource "aws_instance" "my_instance" {
   # key_name = aws_key_pair.my_key_pair.key_name # uncomment this to create a new key-pair
   tags = var.instance_name_env
   # Connection Block
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = file("/Users/vinaykonda/awsKey2.pem")
-    host        = self.public_ip
-  }
-  # Provisioners
-  # To install nginx server on the ec2 instance using provisioners concept in aws cloud
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update -y",
-      "sudo apt install -y nginx",
-      "sudo systemctl start nginx",
-      "sudo systemctl enable nginx"
-    ]
-  }
-  # File provisioner
-  provisioner "file" {
-    source      = "/Users/vinaykonda/terraform.txt"
-    destination = "/home/ubuntu/terraform.txt"
-  }
-  # Local-exec provisioner
-  provisioner "local-exec" {
-    command = "echo ${self.public_ip} >> instances.txt"
-  }
+  # connection {
+  #   type        = "ssh"
+  #   user        = "ubuntu"
+  #   private_key = file("/Users/vinaykonda/awsKey2.pem")
+  #   host        = self.public_ip
 }
+# Provisioners
+# To install nginx server on the ec2 instance using provisioners concept in aws cloud
+# provisioner "remote-exec" {
+#   inline = [
+#     "sudo apt update -y",
+#     "sudo apt install -y nginx",
+#     "sudo systemctl start nginx",
+#     "sudo systemctl enable nginx"
+#   ]
+# }
+# File provisioner
+# provisioner "file" {
+#   source      = "/Users/vinaykonda/terraform.txt"
+#   destination = "/home/ubuntu/terraform.txt"
+# }
+# Local-exec provisioner
+#   provisioner "local-exec" {
+#     command = "echo ${self.public_ip} >> instances.txt"
+#   }
+# }
 
 # Create IAM users using count and list(string)
 # resource "aws_iam_user" "user_iam" {
