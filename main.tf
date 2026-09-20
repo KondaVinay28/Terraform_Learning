@@ -56,13 +56,22 @@ resource "aws_security_group" "my_sg" {
   # }
   # Dynamic blocks
   dynamic "ingress" {
-    for_each = var.ingress_rules
+    # for_each = var.ingress_rules
+    # content {
+    #   description = ingress.value.description
+    #   from_port   = ingress.value.port
+    #   to_port     = ingress.value.port
+    #   protocol    = "tcp"
+    #   cidr_blocks = ingress.value.cidr_blocks
+    # }
+    # Using locals
+    for_each = local.inbound_rules
     content {
-      description = ingress.value.description
-      from_port   = ingress.value.port
-      to_port     = ingress.value.port
-      protocol    = "tcp"
-      cidr_blocks = ingress.value.cidr_blocks
+      description = ingress.value.desc
+      from_port = ingress.value.port
+      to_port = ingress.value.port
+      protocol = ingress.value.protocol 
+      cidr_blocks = [ ingress.value.cidr_block ]
     }
   }
   # Outbound Rules
