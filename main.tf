@@ -68,10 +68,10 @@ resource "aws_security_group" "my_sg" {
     for_each = local.inbound_rules
     content {
       description = ingress.value.desc
-      from_port = ingress.value.port
-      to_port = ingress.value.port
-      protocol = ingress.value.protocol 
-      cidr_blocks = [ ingress.value.cidr_block ]
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = ingress.value.protocol
+      cidr_blocks = [ingress.value.cidr_block]
     }
   }
   # Outbound Rules
@@ -124,6 +124,16 @@ resource "aws_instance" "my_instance" {
   key_name                    = "awsKey2" # use this if you have an existing key-pair in aws cloud
   # key_name = aws_key_pair.my_key_pair.key_name # uncomment this to create a new key-pair
   tags = var.instance_name_env
+  # Script to install apache2 via user data block
+  # user_data = <<-EOF
+  #             #!/bin/bash
+  #             sudo apt update -y
+  #             sudo apt install -y apache2
+  #             sudo systemctl start apache2
+  #             sudo systmectl enable apache2
+  # EOF
+  # Use below script if you have a .sh file
+  # user_data = file("/Users/vinaykonda/Desktop/Terraform_Learning/install_apache.sh")
   # Connection Block
   # connection {
   #   type        = "ssh"

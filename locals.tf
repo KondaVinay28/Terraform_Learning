@@ -8,8 +8,8 @@ locals {
 }
 # Dynamic Blocks using locals
 locals {
-  inbound_rules = [ 
-		{ port = 22, protocol = "tcp", desc = "SSH Access", cidr_block = "0.0.0.0/0"},
-		{ port = 80, protocol = "tcp", desc = "HTTP Access", cidr_block = "0.0.0.0/0" }
-	]
+  inbound_rules = [
+    { port = 22, protocol = "tcp", desc = "SSH Access", cidr_block = "0.0.0.0/0" },
+    { port = 80, protocol = "tcp", desc = "HTTP Access", cidr_block = "0.0.0.0/0" }
+  ]
 }  
