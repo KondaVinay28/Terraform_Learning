@@ -124,6 +124,20 @@ resource "aws_instance" "my_instance" {
   key_name                    = "awsKey2" # use this if you have an existing key-pair in aws cloud
   # key_name = aws_key_pair.my_key_pair.key_name # uncomment this to create a new key-pair
   tags = var.instance_name_env
+  #precondition lifecycle rule --- prompts error msg when u plan
+  # lifecycle {
+  #   precondition {
+  #     condition = var.instance_type!= "t3.small"
+  #     error_message = "The Instance Type should be t3.micro"
+  #   }
+
+  # Postcondition lifecycle rule --- prompts an erro msg after apply but still created all resources including the mentioned condition resource too
+  #   postcondition {
+  #     condition = self.public_ip != null && self.public_ip != ""
+  #     error_message = "You have to enable public ip to the ec2 instance"
+  #   }
+  # }
+
   # replace_triggered_by
   # lifecycle {
   #   replace_triggered_by = [ aws_security_group.my_sg ]
