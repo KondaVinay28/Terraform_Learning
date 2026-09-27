@@ -124,6 +124,10 @@ resource "aws_instance" "my_instance" {
   key_name                    = "awsKey2" # use this if you have an existing key-pair in aws cloud
   # key_name = aws_key_pair.my_key_pair.key_name # uncomment this to create a new key-pair
   tags = var.instance_name_env
+  # replace_triggered_by
+  # lifecycle {
+  #   replace_triggered_by = [ aws_security_group.my_sg ]
+  # }
   # create_before_destroy using ami change
   # lifecycle {
   #   create_before_destroy = true
