@@ -114,7 +114,7 @@ resource "aws_route_table_association" "my_rt_association" {
 # }
 # Create an EC2 Instance with our custom vpc id
 resource "aws_instance" "my_instance" {
-  ami                         = "ami-0b6d9d3d33ba97d99"
+  ami                         = "ami-0f8a61b66d1accaee"
   instance_type               = var.instance_type
   count                       = var.instance_count
   associate_public_ip_address = var.public_ip # To enable public IP
@@ -124,6 +124,10 @@ resource "aws_instance" "my_instance" {
   key_name                    = "awsKey2" # use this if you have an existing key-pair in aws cloud
   # key_name = aws_key_pair.my_key_pair.key_name # uncomment this to create a new key-pair
   tags = var.instance_name_env
+  # create_before_destroy using ami change
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
   # Script to install apache2 via user data block
   # user_data = <<-EOF
   #             #!/bin/bash

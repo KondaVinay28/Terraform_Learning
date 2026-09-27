@@ -27,7 +27,23 @@ resource "aws_instance" "example_instance" {
   instance_type               = "t3.micro"
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnet.custom_subnet.id
+  
+  # create_before_destroy rule
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
+
+  # prevent_destroy rule
+  # lifecycle {
+  #   prevent_destroy = false
+  # }
+
+  # ignore_changes rule
+  # lifecycle {
+  #   ignore_changes = [ tags ]
+  # }
   tags = {
     Name = "Data-Source-Instance"
+    Environment = "Prod"
   }
 }
