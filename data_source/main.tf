@@ -27,7 +27,7 @@ resource "aws_instance" "example_instance" {
   instance_type               = "t3.micro"
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnet.custom_subnet.id
-  
+
   # create_before_destroy rule
   # lifecycle {
   #   create_before_destroy = true
@@ -45,5 +45,16 @@ resource "aws_instance" "example_instance" {
   tags = {
     Name = "Data-Source-Instance"
     Environment = "Prod"
+  }
+}
+
+#Null Resource
+resource "null_resource" "example_resource" {
+  # Triggers everytime we run the tf plan or apply
+  triggers = {
+    id = timestamp()
+  }
+  provisioner "local-exec" {
+    command = "echo Hello from Null resource > notes.md"
   }
 }
