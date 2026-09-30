@@ -21,17 +21,22 @@ data "aws_subnet" "custom_subnet" {
     values = ["subnet-us-east-1a"]
   }
 }
+# Resource or modules migration
+moved {
+  from = aws_instance.example
+  to = aws_instance.example_example
+}
 # Create an EC2 instance
-resource "aws_instance" "example_instance" {
+resource "aws_instance" "example_example" {
   ami                         = data.aws_ami.custom_ami.id
   instance_type               = "t3.micro"
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnet.custom_subnet.id
   user_data_replace_on_change = true
   # templatefile
-  user_data = templatefile("/Users/vinaykonda/Desktop/Terraform_Learning/install.sh.tftpl", {
-    environment_name = "Production"
-  })
+  # user_data = templatefile("/Users/vinaykonda/Desktop/Terraform_Learning/install.sh.tftpl", {
+  #   environment_name = "Production"
+  # })
 
   # create_before_destroy rule
   # lifecycle {
@@ -48,14 +53,14 @@ resource "aws_instance" "example_instance" {
   #   ignore_changes = [ tags ]
   # }
   tags = {
-    Name = "Data-Source-Instance"
+    Name        = "Data-Source-Instance"
     Environment = "Prod"
   }
 }
 
 #Null Resource
 # resource "null_resource" "example_resource" {
-  # Triggers everytime we run the tf plan or apply
+# Triggers everytime we run the tf plan or apply
 #   triggers = {
 #     id = timestamp()
 #   }
