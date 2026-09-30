@@ -27,6 +27,11 @@ resource "aws_instance" "example_instance" {
   instance_type               = "t3.micro"
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnet.custom_subnet.id
+  user_data_replace_on_change = true
+  # templatefile
+  user_data = templatefile("/Users/vinaykonda/Desktop/Terraform_Learning/install.sh.tftpl", {
+    environment_name = "Production"
+  })
 
   # create_before_destroy rule
   # lifecycle {
@@ -49,12 +54,12 @@ resource "aws_instance" "example_instance" {
 }
 
 #Null Resource
-resource "null_resource" "example_resource" {
+# resource "null_resource" "example_resource" {
   # Triggers everytime we run the tf plan or apply
-  triggers = {
-    id = timestamp()
-  }
-  provisioner "local-exec" {
-    command = "echo Hello from Null resource > notes.md"
-  }
-}
+#   triggers = {
+#     id = timestamp()
+#   }
+#   provisioner "local-exec" {
+#     command = "echo Hello from Null resource > notes.md"
+#   }
+# }
