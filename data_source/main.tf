@@ -22,12 +22,12 @@ data "aws_subnet" "custom_subnet" {
   }
 }
 # Resource or modules migration
-moved {
-  from = aws_instance.example
-  to = aws_instance.example_example
-}
+# moved {
+#   from = aws_instance.example
+#   to   = aws_instance.example_example
+# }
 # Create an EC2 instance
-resource "aws_instance" "example_example" {
+resource "aws_instance" "example_example_example" {
   ami                         = data.aws_ami.custom_ami.id
   instance_type               = "t3.micro"
   associate_public_ip_address = true
